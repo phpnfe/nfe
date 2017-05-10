@@ -1,0 +1,37 @@
+{
+    "name"             : "phpnfe/nfe",
+    "description"      : "NFe para PHP por NetForce",
+    "keywords"         : ["nfe", "php", "netforce"],
+    "license"          : "MIT",
+    "authors"          : [
+        {
+            "name" : "Bruno Gonçalves",
+            "email": "bugotech@gmail.com"
+        }
+    ],
+    "require"          : {
+        "nesbot/carbon"                    : "1.*",
+        "illuminate/support"               : "5.2.*",
+        "illuminate/filesystem"            : "5.2.*",
+        "phpdocumentor/reflection-docblock": "^3.1",
+        "dompdf/dompdf"                    : "0.6.*",
+        "picqer/php-barcode-generator"     : "^0.2.0",
+        "phpnfe/tools"                     : "1.2.*"
+    },
+
+    "require-dev"      : {
+        "phpunit/phpunit": "4.8.*"
+    },
+
+    "autoload"         : {
+        "psr-4": {
+            "PhpNFe\\NFe\\": "src/"
+        },
+
+        "files": [
+            "src/DanfeNFe/bootstrap.php"
+        ]
+    },
+
+    "minimum-stability": "stable"
+}

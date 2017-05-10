@@ -1,0 +1,16 @@
+<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="$versao">
+    <infEvento Id="$eventId">
+        <cOrgao>$cOrgao</cOrgao>
+        <tpAmb>$tpAmb</tpAmb>
+        <CNPJ>$cnpj</CNPJ>
+        <chNFe>$chNFe</chNFe>
+        <dhEvento>$dhEvento</dhEvento>
+        <tpEvento>$tpEvento</tpEvento>
+        <nSeqEvento>$nSeqEvento</nSeqEvento>
+        <verEvento>$versao</verEvento>
+        <detEvento versao="$versao">
+            <descEvento>$descEvento</descEvento>
+            $tagAdic
+        </detEvento>
+    </infEvento>
+</evento>

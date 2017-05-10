@@ -1,0 +1,3 @@
+<procEventoNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="{{versao}}">
+    {{signedMsg}}{{retEvento}}
+</procEventoNFe>

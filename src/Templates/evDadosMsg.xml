@@ -1,0 +1,6 @@
+<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento">
+    <envEvento xmlns="http://www.portalfiscal.inf.br/nfe" versao="{{versao}}">
+        <idLote>{{idLote}}</idLote>
+        {{xml}}
+    </envEvento>
+</nfeDadosMsg>

@@ -1,0 +1,14 @@
+<inutNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="{{versao}}">
+    <infInut Id="{{idInut}}">
+        <tpAmb>{{tpAmb}}</tpAmb>
+        <xServ>INUTILIZAR</xServ>
+        <cUF>{{cUF}}</cUF>
+        <ano>{{sAno}}</ano>
+        <CNPJ>{{cnpj}}</CNPJ>
+        <mod>{{mod}}</mod>
+        <serie>{{serie}}</serie>
+        <nNFIni>{{nIni}}</nNFIni>
+        <nNFFin>{{nFin}}</nNFFin>
+        <xJust>{{xJust}}</xJust>
+    </infInut>
+</inutNFe>

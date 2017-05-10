@@ -1,0 +1,4 @@
+<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2">
+    <cUF>{{cUF}}</cUF>
+    <versaoDados>{{versaoDados}}</versaoDados>
+</nfeCabecMsg>

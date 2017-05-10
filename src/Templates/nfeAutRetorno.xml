@@ -1,0 +1,4 @@
+<nfeProc xmlns="{{portal}}" versao="{{versao}}">
+    {{xml}}
+    {{prot}}
+</nfeProc>
