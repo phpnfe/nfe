@@ -16,7 +16,7 @@
         "phpdocumentor/reflection-docblock": "^3.1",
         "dompdf/dompdf"                    : "0.6.*",
         "picqer/php-barcode-generator"     : "^0.2.0",
-        "phpnfe/tools"                     : "1.0.*"
+        "phpnfe/tools"                     : "2.0.*"
     },
 
     "require-dev"      : {
