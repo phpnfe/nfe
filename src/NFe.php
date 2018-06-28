@@ -29,7 +29,7 @@ use PhpNFe\Tools\Certificado\Certificado;
 
 class NFe
 {
-    const version = 'NetForce NFe 1.2';
+    const version = 'NetForce NFe 1.3';
 
     /**
      * Classe de controle do certificado.
@@ -41,6 +41,11 @@ class NFe
      * @var Filesystem
      */
     protected $file;
+
+    /**
+     * @var string
+     */
+    protected $schemaVersion = 'PL_009_V4_2016_002_v160';
 
     /**
      * NFe constructor.
@@ -141,6 +146,13 @@ class NFe
         return new InutilizacaoRetorno($this->soap($method, $header, $body));
     }
 
+    /**
+     * Consulta situacao da nota.
+     *
+     * @param $chNFe
+     * @param $tpAmb
+     * @return ConsultaRetorno
+     */
     public function consulta($chNFe, $tpAmb)
     {
         $info = InfoChNFe::getChNFeInfo($chNFe);
@@ -154,10 +166,17 @@ class NFe
         return new ConsultaRetorno($this->soap($method, $header, $body));
     }
 
+    /**
+     * Valida xml pelo schema.
+     *
+     * @param $xml
+     * @param $versao
+     * @return bool
+     */
     public function validar($xml, $versao)
     {
         $nome = $this->identificaXML($xml);
-        $path = __DIR__ . '/schemes/PL_008i2/' . $nome . '_v' . $versao . '.xsd';
+        $path = __DIR__ . '/schemes/' . $this->schemaVersion . '/' . $nome . '_v' . $versao . '.xsd';
 
         return Validar::validar($xml, $path);
     }
@@ -181,7 +200,7 @@ class NFe
             // Salvar certificados na pasta temp criada.
             $this->certificado->salvaChave($dir);
 
-            $client = new Soap\CurlSoap($dir . '/pri.key', $dir . '/pub.key', $dir . '/cert.key');
+            $client = new Soap\CurlSoap($dir . '/pri.key', $dir . '/pub.key', $dir . '/cert.key', 10, 6);
             $resp = $client->send($method->url, $method->getNamespace(), $header, $body, $method->method);
 
             $xml = XML::createByXml($resp);
@@ -196,6 +215,12 @@ class NFe
         }
     }
 
+    /**
+     * Gera id xml.
+     *
+     * @param $xml
+     * @return string
+     */
     private function identificaXML($xml)
     {
         switch (true) {

@@ -13,7 +13,7 @@ use PhpNFe\Tools\Builder\PropriedadeNull;
 
 class Nfe extends Builder
 {
-    const Versao = '3.10';
+    const Versao = '4.00';
 
     /**
      * Informações de identificação da NF-e.
