@@ -9,16 +9,6 @@ use PhpNFe\Tools\Builder\PropriedadeNull;
 class IPINfe extends \PhpNFe\Tools\Builder\Builder
 {
     /**
-     * Classe de enquadramento do IPI para
-     * Cigarros e Bebidas.
-     * Preenchimento conforme Atos Normativos editados pela
-     * Receita Federal (Observação 2).
-     * @var null
-     * @max 5
-     */
-    public $clEnq;
-
-    /**
      * CNPJ do produtor da mercadoria, quando
      * diferente do emitente. Somente para os
      * casos de exportação direta ou indireta.
