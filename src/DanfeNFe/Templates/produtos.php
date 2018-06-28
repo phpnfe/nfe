@@ -47,7 +47,6 @@ $detutos = $nfe->get('')->toArray('det'); ?>
                     <td class="col-min al-right"><?php echo $det->get('imposto.vTotTrib')->number(2); ?></td>
                 </tr>
             <?php
-
 }
             ?>
             </tbody>
