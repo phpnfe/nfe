@@ -46,6 +46,13 @@ class ICMSTotNfe extends \PhpNFe\Tools\Builder\Builder
     public $vICMSUFRemet = null;
 
     /**
+     * Valor Total do FCP (Fundo de Combate à Pobreza).
+     * @var float
+     * @dec 2
+     */
+    public $vFCP = 0.00;
+
+    /**
      * Base de Cálculo do ICMS ST.
      * @var float
      * @dec 2
@@ -58,6 +65,20 @@ class ICMSTotNfe extends \PhpNFe\Tools\Builder\Builder
      * @dec 2
      */
     public $vST = 0.00;
+
+    /**
+     * Valor Total do FCP (Fundo de Combate à Pobreza) retido por substituição tributária.
+     * @var float
+     * @dec 2
+     */
+    public $vFCPST = 0.00;
+
+    /**
+     * Valor Total do FCP retido anteriormente por Substituição Tributária.
+     * @var float
+     * @dec 2
+     */
+    public $vFCPSTRet = 0.00;
 
     /**
      * Valor Total dos produtos e serviços.
@@ -100,6 +121,13 @@ class ICMSTotNfe extends \PhpNFe\Tools\Builder\Builder
      * @dec 2
      */
     public $vIPI = 0.00;
+
+    /**
+     * Valor Total do IPI devolvido.
+     * @var float
+     * @dec 2
+     */
+    public $vIPIDevol = 0.00;
 
     /**
      * Valor do PIS.
