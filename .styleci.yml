@@ -2,7 +2,6 @@ preset: laravel
 
 enabled:
  - concat_with_spaces
- - blank_line_after_namespace
 
 disabled:
  - single_blank_line_at_eof
@@ -10,4 +9,3 @@ disabled:
  - no_leading_import_slash
  - concat_without_spaces
  - blank_line_after_opening_tag
- - linebreak_after_opening_tag
