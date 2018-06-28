@@ -37,15 +37,6 @@ class IdeNfe extends Builder
     public $natOp = '';
 
     /**
-     * 0=Pagamento à vista;
-     * 1=Pagamento a prazo;
-     * 2=Outros.
-     * @var string
-     * @max 1
-     */
-    public $indPag = '';
-
-    /**
      * 55=NF-e emitida em substituição ao modelo 1 ou 1A;
      * 65=NFC-e, utilizada nas operações de venda no varejo (a
      * critério da UF aceitar este modelo de documento).
