@@ -1,6 +1,7 @@
 <?php namespace PhpNFe\NFe;
 
 use NFePHP\NFe\Tools;
+use PhpNFe\NFe\Tools\CorrecaoRetorno;
 use PhpNFe\NFe\Tools\NFeXML;
 use NFePHP\Common\Certificate;
 use PhpNFe\NFe\Tools\CancelaRetorno;
@@ -125,19 +126,17 @@ class NFe
      * @param $xml
      * @param $xCorrecao
      * @param $seqEvento
-     * @return EventoRetorno
+     * @return CorrecaoRetorno
      * @throws \Exception
      */
     public function cartaCorrecao($xml, $xCorrecao, $seqEvento)
     {
-        $xml = NFeXML::createByXml($xml);
-        $method = Sefaz::getMethodInfo($xml->getAmbiente(), $xml->getCuf(), Sefaz::mtCartaCorrecao);
-        $mensagem = EvCCDados::loadDOM($xml, $xCorrecao, $seqEvento);
-        $signedMsg = AjustaXML::limpaXml($this->certificado->assinarXML($mensagem, 'infEvento'));
-        $header = NFEHeader::loadDOM($xml, $method->operation, $method->version, 'infEvento');
-        $body = EvBody::loadDOM(XML::createByXml($signedMsg), $method->operation, 'enviNFe', 'infEvento');
+        $nfeXml= NFeXML::createByXml($xml);
+        $chNFe = str_replace('NFe', '', $nfeXml->getElementsByTagName('infNFe')->item(0)->getAttribute('Id'));
 
-        return new EventoRetorno($this->soap($method, $header, $body), NFeXML::createByXml($signedMsg));
+        $response = $this->tools->sefazCCe($chNFe, $xCorrecao, $seqEvento);
+
+        return new CorrecaoRetorno($this->tools, $response,  $xml);
     }
 
     /**
