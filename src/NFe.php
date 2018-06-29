@@ -1,16 +1,17 @@
 <?php namespace PhpNFe\NFe;
 
 use NFePHP\NFe\Tools;
+use PhpNFe\NFe\Tools\NFeXML;
 use NFePHP\Common\Certificate;
+use PhpNFe\NFe\Tools\CancelaRetorno;
+use PhpNFe\NFe\Tools\AutorizaRetorno;
 
 use DOMDocument;
-use PhpNFe\NFe\Tools\CancelaRetorno;
 use PhpNFe\Tools\XML;
 use PhpNFe\Tools\Soap;
 use PhpNFe\Tools\Validar;
 use PhpNFe\NFe\Tools\Sefaz;
 use PhpNFe\NFe\Tools\EvBody;
-use PhpNFe\NFe\Tools\NFeXML;
 use PhpNFe\NFe\Tools\NFEBody;
 use PhpNFe\NFe\Tools\AjustaXML;
 use PhpNFe\NFe\Tools\EvCCDados;
@@ -23,7 +24,6 @@ use PhpNFe\NFe\Tools\NFeInutDados;
 use PhpNFe\NFe\Tools\EventoRetorno;
 use PhpNFe\NFe\Tools\EvCancelaDados;
 use PhpNFe\NFe\Tools\NFEConsultaMsg;
-use PhpNFe\NFe\Tools\AutorizaRetorno;
 use PhpNFe\NFe\Tools\ConsultaRetorno;
 use PhpNFe\NFe\Tools\NFEConsultaBody;
 use PhpNFe\NFe\Tools\NFEConsultaHeader;
@@ -105,11 +105,10 @@ class NFe
      *
      * @param $xml
      * @param $justificativa
-     * @param $seqEvento
      * @return EventoRetorno
      * @throws \Exception
      */
-    public function cancela($xml, $justificativa, $seqEvento)
+    public function cancela($xml, $justificativa)
     {
         $nfeXml= NFeXML::createByXml($xml);
         $nProt = $nfeXml->getElementsByTagName('nProt')->item(0)->textContent;
@@ -117,7 +116,7 @@ class NFe
 
         $response = $this->tools->sefazCancela($chNFe, $justificativa, $nProt);
 
-        return new CancelaRetorno($response,  $xml);
+        return new CancelaRetorno($this->tools, $response,  $xml);
     }
 
     /**

@@ -1,33 +1,49 @@
 <?php namespace PhpNFe\NFe\Tools;
 
-use PhpNFe\Tools\XML;
+use NFePHP\NFe\Tools;
+use NFePHP\NFe\Complements;
 
 class EventoRetorno extends Retorno
 {
     /**
-     * XML do Retorno.
-     *
-     * @var
+     * @var Tools
      */
-    protected $retorno;
+    protected $tools;
+
+    /**
+     * XML da resposta.
+     *
+     * @var string
+     */
+    protected $xmlResponse;
 
     /**
      * XML da nfe assinada.
      *
-     * @var
+     * @var string
      */
-    protected $xml;
+    protected $xmlAssigned;
 
     /**
-     * @var
+     * XML protocolado.
+     *
+     * @var string
      */
-    protected $infEvento;
+    protected $xmlProtocoled;
 
-    public function __construct(XML $retorno, XML $xml)
+    /**
+     * AutorizaRetorno constructor.
+     * @param string $response
+     * @param string $xml
+     */
+    public function __construct($tools, $response, $xml)
     {
-        $this->retorno = $retorno;
-        $this->xml = $xml;
-        $this->infEvento = $this->retorno->getElementsByTagName('infEvento')->item(0);
+        $this->tools       = $tools;
+        $this->xmlResponse = $response;
+        $this->xmlAssigned = $xml;
+
+        $st = new \NFePHP\NFe\Common\Standardize();
+        $this->response = $st->toStd($response);
     }
 
     /**
@@ -37,7 +53,7 @@ class EventoRetorno extends Retorno
      */
     public function getCode()
     {
-        return $this->infEvento->getElementsByTagName('cStat')->item(0)->textContent;
+        return $this->getValue('retEvento.infEvento.cStat', '0');
     }
 
     /**
@@ -47,7 +63,7 @@ class EventoRetorno extends Retorno
      */
     public function getMessage()
     {
-        return $this->infEvento->getElementsByTagName('xMotivo')->item(0)->textContent;
+        return $this->getValue('retEvento.infEvento.xMotivo', '');
     }
 
     /**
@@ -61,33 +77,40 @@ class EventoRetorno extends Retorno
     }
 
     /**
-     * Retorna o protocolo da mensagem.
-     * @return mixed
-     */
-    public function getProt()
-    {
-        return $this->infEvento->getElementsByTagName('nProt')->item(0)->textContent;
-    }
-
-    /**
      * Retorna a chave de 44 caracteres da nfe.
      *
      * @return string
      */
     public function getChNFe()
     {
-        return $this->infEvento->getElementsByTagName('chNFe')->item(0)->textContent;
+        return $this->getValue('retEvento.infEvento.chNFe', '');
     }
 
+    /**
+     * Retorna o numero do protocolo de autorizacao.
+     *
+     * @return string
+     */
+    public function getNProt()
+    {
+        return $this->getValue('retEvento.infEvento.nProt', '');
+    }
+
+    /**
+     * Retorna o XML assinado e protocolado.
+     *
+     * @return string
+     */
     public function getXML()
     {
         if ($this->isError()) {
             return '';
         }
 
-        $versao = $this->retorno->getElementsByTagName('retEvento')->item(0)->getAttribute('versao');
+        if (! is_null($this->xmlProtocoled)) {
+            return $this->xmlProtocoled;
+        }
 
-        return EvCCXmlRetorno::loadDOM($this->xml,
-            $this->retorno->getElementsByTagName('retEvento')->item(0)->C14N(), $versao);
+        return $this->xmlProtocoled = Complements::toAuthorize($this->tools->lastRequest, $this->xmlResponse);
     }
 }
