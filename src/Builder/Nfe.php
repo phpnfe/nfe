@@ -3,6 +3,7 @@
 use PhpNFe\NFe\Tools\InfoChNFe;
 use PhpNFe\Tools\Builder\Builder;
 use PhpNFe\Tools\Builder\Colecoes;
+use PhpNFe\NFe\Builder\Pag\PagNfe;
 use PhpNFe\NFe\Builder\Cobr\CobrNfe;
 use PhpNFe\NFe\Builder\Dest\DestNfe;
 use PhpNFe\NFe\Builder\Emit\EmitNfe;
@@ -62,6 +63,12 @@ class Nfe extends Builder
     public $cobr;
 
     /**
+     * Grupo de Informações de Pagamento.
+     * @var PagNfe
+     */
+    public $pag;
+
+    /**
      * Grupo de Informações Adicionais.
      * @var InfAdic\InfAdicNfe
      */
@@ -79,6 +86,7 @@ class Nfe extends Builder
         $this->total = new TotalNfe();
         $this->transp = new TranspNfe();
         $this->cobr = new PropriedadeNull('\PhpNFe\NFe\Builder\Cobr\CobrNfe');
+        $this->pag = new PagNfe();
         $this->infAdic = new PropriedadeNull('\PhpNFe\NFe\Builder\InfAdic\InfAdicNfe');
     }
 
