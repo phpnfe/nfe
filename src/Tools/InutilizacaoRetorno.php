@@ -45,7 +45,7 @@ class InutilizacaoRetorno extends Retorno
      */
     public function getCode()
     {
-        return $this->getValue('retEvento.infEvento.cStat', '0');
+        return $this->getValue('infInut.cStat', '0');
     }
 
     /**
@@ -55,7 +55,7 @@ class InutilizacaoRetorno extends Retorno
      */
     public function getMessage()
     {
-        return $this->getValue('retEvento.infEvento.xMotivo', '');
+        return $this->getValue('infInut.xMotivo', '');
     }
 
     /**
@@ -85,7 +85,7 @@ class InutilizacaoRetorno extends Retorno
      */
     public function getNProt()
     {
-        return $this->getValue('retEvento.infEvento.nProt', '');
+        return $this->getValue('infInut.nProt', '');
     }
 
     /**
