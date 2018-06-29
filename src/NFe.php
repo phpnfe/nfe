@@ -142,29 +142,18 @@ class NFe
     /**
      * Inutilizar uma faixa de numeração de nota fiscal.
      *
-     * @param $sAno
-     * @param $cnpj
      * @param $serie
      * @param $nIni
      * @param $nFin
-     * @param $tpAmb
-     * @param $cUF
      * @param $xJust
      * @return InutilizacaoRetorno
      * @throws \Exception
      */
-    public function inutiliza($sAno, $cnpj, $serie, $nIni, $nFin, $tpAmb, $cUF, $xJust)
+    public function inutiliza($serie, $nIni, $nFin, $xJust)
     {
-        $method = Sefaz::getMethodInfo($tpAmb, $cUF, Sefaz::mtInutilizacao);
-        $mensagem = NFeInutDados::loadDOM($sAno, $cnpj, $serie, $nIni, $nFin, $xJust, $method);
-        $signedMsg = AjustaXML::limpaXml($this->certificado->assinarXML($mensagem, 'infInut'));
-        $header = InutHeader::loadDOM($cUF, $method->version);
-        $body = NFeInutBody::loadDOM(XML::createByXml($signedMsg));
+        $response = $this->tools->sefazInutiliza($serie, $nIni, $nFin, $xJust);
 
-        // Validar schema XML
-        $this->validar($signedMsg, $method->version);
-
-        return new InutilizacaoRetorno($this->soap($method, $header, $body));
+        return new InutilizacaoRetorno($this->tools, $response);
     }
 
     /**

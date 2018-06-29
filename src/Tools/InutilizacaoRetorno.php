@@ -1,25 +1,41 @@
 <?php namespace PhpNFe\NFe\Tools;
 
-use PhpNFe\Tools\XML;
+use NFePHP\NFe\Tools;
+use NFePHP\NFe\Complements;
 
 class InutilizacaoRetorno extends Retorno
 {
     /**
-     * XML do Retorno.
-     *
-     * @var
+     * @var Tools
      */
-    protected $retorno;
+    protected $tools;
 
     /**
-     * @var \DOMNode
+     * XML da resposta.
+     *
+     * @var string
      */
-    protected $retInutNFe;
+    protected $xmlResponse;
 
-    public function __construct(XML $retorno)
+    /**
+     * XML protocolado.
+     *
+     * @var string
+     */
+    protected $xmlProtocoled;
+
+    /**
+     * AutorizaRetorno constructor.
+     * @param string $response
+     * @param string $xml
+     */
+    public function __construct($tools, $response)
     {
-        $this->retorno = $retorno;
-        $this->retInutNFe = $this->retorno->getElementsByTagName('retInutNFe')->item(0);
+        $this->tools       = $tools;
+        $this->xmlResponse = $response;
+
+        $st = new \NFePHP\NFe\Common\Standardize();
+        $this->response = $st->toStd($response);
     }
 
     /**
@@ -29,7 +45,7 @@ class InutilizacaoRetorno extends Retorno
      */
     public function getCode()
     {
-        return $this->retInutNFe->getElementsByTagName('cStat')->item(0)->textContent;
+        return $this->getValue('retEvento.infEvento.cStat', '0');
     }
 
     /**
@@ -39,7 +55,7 @@ class InutilizacaoRetorno extends Retorno
      */
     public function getMessage()
     {
-        return $this->retInutNFe->getElementsByTagName('xMotivo')->item(0)->textContent;
+        return $this->getValue('retEvento.infEvento.xMotivo', '');
     }
 
     /**
@@ -59,20 +75,34 @@ class InutilizacaoRetorno extends Retorno
      */
     public function getChNFe()
     {
-        return ''; // Inutilização não tem o codigo da cnfe
+        return ''; // Inutilizacao não tem chave
     }
 
     /**
-     * Retorna o protocolo da mensagem.
-     * @return mixed
+     * Retorna o numero do protocolo de autorizacao.
+     *
+     * @return string
      */
-    public function getProt()
+    public function getNProt()
     {
-        return $this->retInutNFe->getElementsByTagName('nProt')->item(0)->textContent;
+        return $this->getValue('retEvento.infEvento.nProt', '');
     }
 
+    /**
+     * Retorna o XML assinado e protocolado.
+     *
+     * @return string
+     */
     public function getXML()
     {
-        return $this->retInutNFe->C14N();
+        if ($this->isError()) {
+            return '';
+        }
+
+        if (! is_null($this->xmlProtocoled)) {
+            return $this->xmlProtocoled;
+        }
+
+        return $this->xmlProtocoled = Complements::toAuthorize($this->tools->lastRequest, $this->xmlResponse);
     }
 }
