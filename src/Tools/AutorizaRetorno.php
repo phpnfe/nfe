@@ -1,27 +1,40 @@
 <?php namespace PhpNFe\NFe\Tools;
 
-use PhpNFe\Tools\XML;
-
 class AutorizaRetorno extends Retorno
 {
     /**
+     * XML da resposta.
+     *
+     * @var string
+     */
+    protected $xmlResponse;
+
+    /**
      * XML da nfe assinada.
      *
-     * @var XML
+     * @var string
      */
-    protected $xml;
+    protected $xmlAssigned;
+
+    /**
+     * XML protocolado.
+     *
+     * @var string
+     */
+    protected $xmlProtocoled;
 
     /**
      * AutorizaRetorno constructor.
-     * @param $response
-     * @param XML $xml
+     * @param string $response
+     * @param string $xml
      */
-    public function __construct($response, XML $xml)
+    public function __construct($response, $xml)
     {
+        $this->xmlResponse = $response;
+        $this->xmlAssigned = $xml;
+
         $st = new \NFePHP\NFe\Common\Standardize();
         $this->response = $st->toStd($response);
-
-        $this->xml = $xml;
     }
 
     /**
@@ -65,7 +78,27 @@ class AutorizaRetorno extends Retorno
     }
 
     /**
-     * Retorna o XML protocolado da NFe.
+     * Retorna o numero do protocolo de autorizacao.
+     *
+     * @return string
+     */
+    public function getNProt()
+    {
+        return $this->getValue('protNFe.infProt.nProt', '');
+    }
+
+    /**
+     * Retorna o digVal do protocolo.
+     *
+     * @return string
+     */
+    public function getDigVal()
+    {
+        return $this->getValue('protNFe.infProt.digVal', '');
+    }
+
+    /**
+     * Retorna o XML assinado e protocolado.
      *
      * @return string
      */
@@ -75,22 +108,11 @@ class AutorizaRetorno extends Retorno
             return '';
         }
 
-        $versao = $this->retorno->getElementsByTagName('retEnviNFe')->item(0)->getAttribute('versao');
-        $urlPortal = $this->retorno->getElementsByTagName('retEnviNFe')->item(0)->getAttribute('xmlns');
+        if (! is_null($this->xmlProtocoled)) {
+            return $this->xmlProtocoled;
+        }
 
-        // Prot
-        $prot = $this->retorno->getElementsByTagName('protNFe')->item(0)->C14N();
-        $prot = preg_replace('/\s+/', ' ', preg_replace('%xmlns:[a-z]+="[a-zA-Z0-9:/.-]+"%', '', $prot));
-
-        $params = [];
-        $params['{{portal}}'] = $urlPortal;
-        $params['{{versao}}'] = $versao;
-        $params['{{xml}}'] = $this->xml->C14N();
-        $params['{{prot}}'] = $prot;
-
-        $xml = file_get_contents(__DIR__ . '/../Templates/nfeAutRetorno.xml');
-        $xml = strtr($xml, $params);
-
-        return $xml;
+        $protocol = new \NFePHP\NFe\Factories\Protocol();
+        return $this->xmlProtocoled = $protocol->add($this->xmlAssigned, $this->xmlResponse);
     }
 }

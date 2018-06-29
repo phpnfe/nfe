@@ -57,22 +57,4 @@ abstract class Retorno
      * @return bool
      */
     abstract public function isError();
-
-    /**
-     * Retorna o XML protocolado quando OK.
-     *
-     * @return string
-     */
-    abstract public function getXML();
-
-    /**
-     * Salvar o arquivo xml protocolado.
-     *
-     * @param $arquivo
-     */
-    public function salvaXML($arquivo)
-    {
-        $code = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $this->getXML();
-        file_put_contents($arquivo, $code);
-    }
 }
