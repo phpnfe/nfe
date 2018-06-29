@@ -4,6 +4,7 @@ use NFePHP\NFe\Tools;
 use NFePHP\Common\Certificate;
 
 use DOMDocument;
+use PhpNFe\NFe\Tools\CancelaRetorno;
 use PhpNFe\Tools\XML;
 use PhpNFe\Tools\Soap;
 use PhpNFe\Tools\Validar;
@@ -110,20 +111,13 @@ class NFe
      */
     public function cancela($xml, $justificativa, $seqEvento)
     {
-        $xml   = NFeXML::createByXml($xml);
-        $nProt = $xml->getElementsByTagName('nProt')->item(0)->textContent;
-        $chNFe = str_replace('NFe', '', $xml->getElementsByTagName('infNFe')->item(0)->getAttribute('Id'));
+        $nfeXml= NFeXML::createByXml($xml);
+        $nProt = $nfeXml->getElementsByTagName('nProt')->item(0)->textContent;
+        $chNFe = str_replace('NFe', '', $nfeXml->getElementsByTagName('infNFe')->item(0)->getAttribute('Id'));
 
         $response = $this->tools->sefazCancela($chNFe, $justificativa, $nProt);
 
-
-        $method = Sefaz::getMethodInfo($xml->getAmbiente(), $xml->getCuf(), Sefaz::mtCancela);
-        $mensagem = EvCancelaDados::loadDOM($xml, $justificativa, $seqEvento);
-        $signedMsg = AjustaXML::limpaXml($this->certificado->assinarXML($mensagem, 'infEvento'));
-        $header = NFEHeader::loadDOM($xml, $method->operation, $method->version, 'infEvento');
-        $body = EvBody::loadDOM(XML::createByXml($signedMsg), $method->operation, 'enviNFe', 'infEvento');
-
-        return new EventoRetorno($this->soap($method, $header, $body), NFeXML::createByXml($signedMsg));
+        return new CancelaRetorno($response,  $xml);
     }
 
     /**
