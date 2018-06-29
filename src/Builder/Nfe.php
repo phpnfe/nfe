@@ -2,8 +2,8 @@
 
 use PhpNFe\NFe\Tools\InfoChNFe;
 use PhpNFe\Tools\Builder\Builder;
-use PhpNFe\Tools\Builder\Colecoes;
 use PhpNFe\NFe\Builder\Pag\PagNfe;
+use PhpNFe\Tools\Builder\Colecoes;
 use PhpNFe\NFe\Builder\Cobr\CobrNfe;
 use PhpNFe\NFe\Builder\Dest\DestNfe;
 use PhpNFe\NFe\Builder\Emit\EmitNfe;
