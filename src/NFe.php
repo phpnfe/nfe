@@ -8,19 +8,6 @@ use PhpNFe\NFe\Tools\AutorizaRetorno;
 use PhpNFe\NFe\Tools\CorrecaoRetorno;
 use PhpNFe\NFe\Tools\InutilizacaoRetorno;
 
-use DOMDocument;
-use PhpNFe\Tools\XML;
-use PhpNFe\Tools\Soap;
-use PhpNFe\Tools\Validar;
-use PhpNFe\NFe\Tools\Sefaz;
-use PhpNFe\NFe\Tools\NFEBody;
-use PhpNFe\NFe\Tools\InfoChNFe;
-use PhpNFe\NFe\Tools\MethodSefaz;
-use PhpNFe\NFe\Tools\NFEConsultaMsg;
-use PhpNFe\NFe\Tools\ConsultaRetorno;
-use PhpNFe\NFe\Tools\NFEConsultaBody;
-use PhpNFe\NFe\Tools\NFEConsultaHeader;
-
 class NFe
 {
     const version = 'NetForce NFe 1.3';
@@ -102,7 +89,7 @@ class NFe
      */
     public function cancela($xml, $justificativa)
     {
-        $nfeXml= NFeXML::createByXml($xml);
+        $nfeXml = NFeXML::createByXml($xml);
         $nProt = $nfeXml->getElementsByTagName('nProt')->item(0)->textContent;
         $chNFe = str_replace('NFe', '', $nfeXml->getElementsByTagName('infNFe')->item(0)->getAttribute('Id'));
 
@@ -122,7 +109,7 @@ class NFe
      */
     public function cartaCorrecao($xml, $xCorrecao, $seqEvento)
     {
-        $nfeXml= NFeXML::createByXml($xml);
+        $nfeXml = NFeXML::createByXml($xml);
         $chNFe = str_replace('NFe', '', $nfeXml->getElementsByTagName('infNFe')->item(0)->getAttribute('Id'));
 
         $response = $this->tools->sefazCCe($chNFe, $xCorrecao, $seqEvento);
@@ -156,83 +143,6 @@ class NFe
      */
     public function consulta($chNFe, $tpAmb)
     {
-        $info = InfoChNFe::getChNFeInfo($chNFe);
-        $method = Sefaz::getMethodInfo(Sefaz::getAmbiente($tpAmb), $info->cUF, Sefaz::mtConsulta);
-        $mensagem = NFEConsultaMsg::loadDOM($tpAmb, $chNFe);
-        $header = NFEConsultaHeader::loadDOM($info->cUF, $method->version);
-        $body = NFEConsultaBody::loadDOM($mensagem);
-
-        $this->validar($mensagem, $method->version);
-
-        return new ConsultaRetorno($this->soap($method, $header, $body));
-    }
-
-    /**
-     * Valida xml pelo schema.
-     *
-     * @param $xml
-     * @param $versao
-     * @return bool
-     */
-    public function validar($xml, $versao)
-    {
-        $nome = $this->identificaXML($xml);
-        $path = __DIR__ . '/schemes/' . $this->schemaVersion . '/' . $nome . '_v' . $versao . '.xsd';
-
-        return Validar::validar($xml, $path);
-    }
-
-    /**
-     * Fazer requisição SOAP.
-     *
-     * @param MethodSefaz $method
-     * @param $header
-     * @param $body
-     * @return DOMDocument
-     * @throws \Exception
-     */
-    protected function soap(MethodSefaz $method, $header, $body)
-    {
-        $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
-        try {
-            // Criar diretorio temporario.
-            $this->file->makeDirectory($dir);
-
-            // Salvar certificados na pasta temp criada.
-            $this->certificado->salvaChave($dir);
-
-            $client = new Soap\CurlSoap($dir . '/pri.key', $dir . '/pub.key', $dir . '/cert.key', 10, 6);
-            $resp = $client->send($method->url, $method->getNamespace(), $header, $body, $method->method);
-
-            $xml = XML::createByXml($resp);
-
-            $this->file->deleteDirectory($dir);
-
-            return $xml;
-        } catch (\Exception $e) {
-            $this->file->deleteDirectory($dir);
-
-            throw $e;
-        }
-    }
-
-    /**
-     * Gera id xml.
-     *
-     * @param $xml
-     * @return string
-     */
-    private function identificaXML($xml)
-    {
-        switch (true) {
-            case stristr($xml, 'infNFe'):
-                return 'nfe';
-            case stristr($xml, 'infInut'):
-                return 'inutNFe';
-            case stristr($xml, 'consSitNFe'):
-                return 'consSitNFe';
-            default:
-                return '';
-        }
+        throw new \Exception("Falta implementar com o nfephp.org...");
     }
 }
