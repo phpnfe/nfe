@@ -1,5 +1,8 @@
 <?php namespace PhpNFe\NFe;
 
+use NFePHP\NFe\Tools;
+use NFePHP\Common\Certificate;
+
 use DOMDocument;
 use PhpNFe\Tools\XML;
 use PhpNFe\Tools\Soap;
@@ -19,42 +22,79 @@ use PhpNFe\NFe\Tools\NFeInutDados;
 use PhpNFe\NFe\Tools\EventoRetorno;
 use PhpNFe\NFe\Tools\EvCancelaDados;
 use PhpNFe\NFe\Tools\NFEConsultaMsg;
-use Illuminate\Filesystem\Filesystem;
 use PhpNFe\NFe\Tools\AutorizaRetorno;
 use PhpNFe\NFe\Tools\ConsultaRetorno;
 use PhpNFe\NFe\Tools\NFEConsultaBody;
 use PhpNFe\NFe\Tools\NFEConsultaHeader;
 use PhpNFe\NFe\Tools\InutilizacaoRetorno;
-use PhpNFe\Tools\Certificado\Certificado;
 
 class NFe
 {
     const version = 'NetForce NFe 1.3';
 
     /**
+     * @var array
+     */
+    protected $config = [];
+
+    /**
      * Classe de controle do certificado.
-     * @var Certificado
+     * @var Certificate
      */
-    protected $certificado;
+    protected $certificate;
 
     /**
-     * @var Filesystem
+     * @var Tools
      */
-    protected $file;
-
-    /**
-     * @var string
-     */
-    protected $schemaVersion = 'PL_009_V4_2016_002_v160';
+    protected $tools;
 
     /**
      * NFe constructor.
-     * @param Certificado $certificado
+     * @param Certificate $certificate
      */
-    public function __construct(Certificado $certificado)
+    public function __construct(array $config, Certificate $certificate)
     {
-        $this->certificado = $certificado;
-        $this->file = new Filesystem();
+        $this->config = $config;
+        $this->certificate = $certificate;
+        $this->tools = new Tools(json_encode($this->config), $this->certificate);
+    }
+
+    /**
+     * Assinar XML da NFe.
+     *
+     * @param $xml
+     * @return string
+     */
+    public function signNFe($xml)
+    {
+        return $this->tools->signNFe($xml);
+    }
+
+    /**
+     * Gerar novo id de lote.
+     *
+     * @return string
+     */
+    public function newIdLote()
+    {
+        return substr(str_replace(',', '', number_format(microtime(true) * 1000000, 0)), 0, 15);
+    }
+
+    /**
+     * Envia um xml assinado e validado para a Receita Federal para
+     * ser realizada a autorização.
+     *
+     * @param $xml
+     * @throws \Exception
+     * @return AutorizaRetorno
+     */
+    public function autorizar($xml)
+    {
+        $response = $this->tools->sefazEnviaLote([$xml], $this->newIdLote(), 1);
+
+        $xml = NFeXML::createByXml($xml);
+
+        return new AutorizaRetorno($response, $xml);
     }
 
     /**
@@ -76,25 +116,6 @@ class NFe
         $body = EvBody::loadDOM(XML::createByXml($signedMsg), $method->operation, 'enviNFe', 'infEvento');
 
         return new EventoRetorno($this->soap($method, $header, $body), NFeXML::createByXml($signedMsg));
-    }
-
-    /**
-     * Envia um xml assinado e validado para a Receita Federal para
-     * ser realizada a autorização.
-     *
-     * @param $xml
-     * @throws \Exception
-     * @return AutorizaRetorno
-     */
-    public function autorizar($xml)
-    {
-        $xml = NFeXML::createByXml($xml);
-        $method = Sefaz::getMethodInfo($xml->getAmbiente(), $xml->getCuf(), Sefaz::mtAutoriza);
-        $header = NFEHeader::loadDOM($xml, $method->operation, $method->version, 'infNFe');
-        $body = NFEBody::loadDOM($xml, $method->operation, 'enviNFe', 'infNFe');
-
-        // Executar o comando "nfeAutorizacaoLote"
-        return new AutorizaRetorno($this->soap($method, $header, $body), $xml);
     }
 
     /**

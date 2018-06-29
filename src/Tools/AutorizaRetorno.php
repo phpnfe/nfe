@@ -5,13 +5,6 @@ use PhpNFe\Tools\XML;
 class AutorizaRetorno extends Retorno
 {
     /**
-     * XML do retorno.
-     *
-     * @var XML
-     */
-    protected $retorno;
-
-    /**
      * XML da nfe assinada.
      *
      * @var XML
@@ -19,20 +12,16 @@ class AutorizaRetorno extends Retorno
     protected $xml;
 
     /**
-     * @var \DOMNode
-     */
-    protected $infProt;
-
-    /**
      * AutorizaRetorno constructor.
-     * @param XML $retorno
+     * @param $response
      * @param XML $xml
      */
-    public function __construct(XML $retorno, XML $xml)
+    public function __construct($response, XML $xml)
     {
-        $this->retorno = $retorno;
+        $st = new \NFePHP\NFe\Common\Standardize();
+        $this->response = $st->toStd($response);
+
         $this->xml = $xml;
-        $this->infProt = $this->retorno->getElementsByTagName('infProt')->item(0);
     }
 
     /**
@@ -42,7 +31,7 @@ class AutorizaRetorno extends Retorno
      */
     public function getCode()
     {
-        return $this->infProt->getElementsByTagName('cStat')->item(0)->textContent;
+        return $this->getValue('infProt.cStat', '0');
     }
 
     /**
@@ -52,7 +41,7 @@ class AutorizaRetorno extends Retorno
      */
     public function getMessage()
     {
-        return $this->infProt->getElementsByTagName('xMotivo')->item(0)->textContent;
+        return $this->getValue('infProt.xMotivo', '');
     }
 
     /**
@@ -72,11 +61,7 @@ class AutorizaRetorno extends Retorno
      */
     public function getChNFe()
     {
-        if ($this->isError()) {
-            return '';
-        }
-
-        return $this->infProt->getElementsByTagName('chNFe')->item(0)->textContent;
+        return $this->getValue('infProt.chNFe', '');
     }
 
     /**

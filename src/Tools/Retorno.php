@@ -3,6 +3,34 @@
 abstract class Retorno
 {
     /**
+     * Object response.
+     *
+     * @var object
+     */
+    protected $response;
+
+    /**
+     * @param $key
+     * @param null $default
+     * @return null|object
+     */
+    protected function getValue($key, $default = null)
+    {
+        $value = $this->response;
+        $parts = explode('.', $key);
+
+        foreach ($parts as $part) {
+            if (isset($value->{$part})) {
+                $value = $value->{$part};
+            } else {
+                return $default;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * Retorna o código do retorno.
      *
      * @return string
