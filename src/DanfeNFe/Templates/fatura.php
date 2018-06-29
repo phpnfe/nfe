@@ -21,7 +21,6 @@ if ((count($linhas) == 1) && (count($linhas[0]) < 4)) {
         $linhas[0][] = null;
     }
 }
-
 ?>
 
 <?php if (!empty($linhas)) {
@@ -39,8 +38,8 @@ if ((count($linhas) == 1) && (count($linhas[0]) < 4)) {
                     ?>
                     <td class="col-3 no-border no-pad"></td>
                 <?php
-            } else {
-                ?>
+                } else {
+                    ?>
                     <td class="col-3 no-pad">
                         <table class="table fatura">
                             <tr>
