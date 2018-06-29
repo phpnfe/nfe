@@ -15,7 +15,7 @@ class CobrNfe extends \PhpNFe\Tools\Builder\Builder
     public $fat;
 
     /**
-     * Grupo Duplicata.
+     * Grupo Parcelas.
      * @var Colecoes
      */
     public $dup;
