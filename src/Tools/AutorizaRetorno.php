@@ -31,7 +31,7 @@ class AutorizaRetorno extends Retorno
      */
     public function getCode()
     {
-        return $this->getValue('infProt.cStat', '0');
+        return $this->getValue('protNFe.infProt.cStat', '0');
     }
 
     /**
@@ -41,7 +41,7 @@ class AutorizaRetorno extends Retorno
      */
     public function getMessage()
     {
-        return $this->getValue('infProt.xMotivo', '');
+        return $this->getValue('protNFe.infProt.xMotivo', '');
     }
 
     /**
@@ -61,7 +61,7 @@ class AutorizaRetorno extends Retorno
      */
     public function getChNFe()
     {
-        return $this->getValue('infProt.chNFe', '');
+        return $this->getValue('protNFe.infProt.chNFe', '');
     }
 
     /**

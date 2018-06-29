@@ -56,7 +56,9 @@ class NFe
     {
         $this->config = $config;
         $this->certificate = $certificate;
+
         $this->tools = new Tools(json_encode($this->config), $this->certificate);
+        $this->tools->model('55');
     }
 
     /**
@@ -108,7 +110,13 @@ class NFe
      */
     public function cancela($xml, $justificativa, $seqEvento)
     {
-        $xml = NFeXML::createByXml($xml);
+        $xml   = NFeXML::createByXml($xml);
+        $nProt = $xml->getElementsByTagName('nProt')->item(0)->textContent;
+        $chNFe = str_replace('NFe', '', $xml->getElementsByTagName('infNFe')->item(0)->getAttribute('Id'));
+
+        $response = $this->tools->sefazCancela($chNFe, $justificativa, $nProt);
+
+
         $method = Sefaz::getMethodInfo($xml->getAmbiente(), $xml->getCuf(), Sefaz::mtCancela);
         $mensagem = EvCancelaDados::loadDOM($xml, $justificativa, $seqEvento);
         $signedMsg = AjustaXML::limpaXml($this->certificado->assinarXML($mensagem, 'infEvento'));
