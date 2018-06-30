@@ -2,5 +2,4 @@
 
 class CancelaRetorno extends EventoRetorno
 {
-
 }

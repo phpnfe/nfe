@@ -95,7 +95,7 @@ class NFe
 
         $response = $this->tools->sefazCancela($chNFe, $justificativa, $nProt);
 
-        return new CancelaRetorno($this->tools, $response,  $xml);
+        return new CancelaRetorno($this->tools, $response, $xml);
     }
 
     /**
@@ -114,7 +114,7 @@ class NFe
 
         $response = $this->tools->sefazCCe($chNFe, $xCorrecao, $seqEvento);
 
-        return new CorrecaoRetorno($this->tools, $response,  $xml);
+        return new CorrecaoRetorno($this->tools, $response, $xml);
     }
 
     /**
@@ -143,6 +143,6 @@ class NFe
      */
     public function consulta($chNFe, $tpAmb)
     {
-        throw new \Exception("Falta implementar com o nfephp.org...");
+        throw new \Exception('Falta implementar com o nfephp.org...');
     }
 }

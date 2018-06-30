@@ -38,7 +38,7 @@ class EventoRetorno extends Retorno
      */
     public function __construct($tools, $response, $xml)
     {
-        $this->tools       = $tools;
+        $this->tools = $tools;
         $this->xmlResponse = $response;
         $this->xmlAssigned = $xml;
 

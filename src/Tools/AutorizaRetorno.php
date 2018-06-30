@@ -113,6 +113,7 @@ class AutorizaRetorno extends Retorno
         }
 
         $protocol = new \NFePHP\NFe\Factories\Protocol();
+
         return $this->xmlProtocoled = $protocol->add($this->xmlAssigned, $this->xmlResponse);
     }
 }

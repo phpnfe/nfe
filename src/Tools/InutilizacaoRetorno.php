@@ -31,7 +31,7 @@ class InutilizacaoRetorno extends Retorno
      */
     public function __construct($tools, $response)
     {
-        $this->tools       = $tools;
+        $this->tools = $tools;
         $this->xmlResponse = $response;
 
         $st = new \NFePHP\NFe\Common\Standardize();
