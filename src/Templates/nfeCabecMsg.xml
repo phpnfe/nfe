@@ -1,4 +1,0 @@
-<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/{{metodo}}">
-    <cUF>{{cUF}}</cUF>
-    <versaoDados>{{versaoDados}}</versaoDados>
-</nfeCabecMsg>
