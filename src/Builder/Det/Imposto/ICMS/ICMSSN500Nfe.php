@@ -54,6 +54,16 @@ class ICMSSN500Nfe extends \PhpNFe\Tools\Builder\Builder
     public $vBCSTRet = 0.00;
 
     /**
+     * Alíquota suportada pelo Consumidor Final.
+     * Deve ser informada a alíquota do cálculo do ICMS-ST, já incluso o
+     * FCP caso incida sobre a mercadoria. Exemplo: alíquota da mercadoria na venda ao
+     * consumidor final = 18% e 2% de FCP. A alíquota a ser informada no campo pST deve ser 20%..
+     * @var float
+     * @dec 4
+     */
+    public $pST = 0;
+
+    /**
      * Valor do ICMS ST retido.
      * Valor do ICMS ST cobrado anteriormente por ST (v2.0). O valor
      * pode ser omitido quando a legislação não exigir a sua
