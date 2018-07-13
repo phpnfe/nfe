@@ -23,14 +23,14 @@ class Comb extends Builder
     public $cProdANP = '';
 
     /**
-     * Percentual de Gás Natural para o produto
-     * GLP (cProdANP=210203001);
-     * O campo é opcional, portanto no caso não haver mistura o
-     * campo de percentual não deve ser informado.
-     * @var float|null
-     * @dec 4
+     * Descrição do produto conforme ANP
+     * Utilizar a descrição de produtos do Sistema de Informações de Movimentação de Produtos -
+     * SIMP (http://www.anp.gov.br/simp/).
+     *
+     * @var string
+     * @dec 95
      */
-    public $pMixGN = null;
+    public $descANP = '';
 
     /**
      * Código de autorização / registro do CODIF
