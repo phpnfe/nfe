@@ -9,6 +9,7 @@ use PhpNFe\NFe\Builder\Dest\DestNfe;
 use PhpNFe\NFe\Builder\Emit\EmitNfe;
 use PhpNFe\NFe\Builder\IdeNfe\IdeNfe;
 use PhpNFe\NFe\Builder\Total\TotalNfe;
+use PhpNFe\NFe\Builder\Compra\CompraNfe;
 use PhpNFe\NFe\Builder\Transp\TranspNfe;
 use PhpNFe\Tools\Builder\PropriedadeNull;
 
@@ -75,6 +76,12 @@ class Nfe extends Builder
     public $infAdic;
 
     /**
+     * Grupo de informacoes da compra.
+     * @var CompraNfe
+     */
+    public $compra;
+
+    /**
      * NFe constructor.
      */
     public function __construct()
@@ -88,6 +95,7 @@ class Nfe extends Builder
         $this->cobr = new PropriedadeNull('\PhpNFe\NFe\Builder\Cobr\CobrNfe');
         $this->pag = new PagNfe();
         $this->infAdic = new PropriedadeNull('\PhpNFe\NFe\Builder\InfAdic\InfAdicNfe');
+        $this->compra = new PropriedadeNull('\PhpNFe\NFe\Builder\Compra\CompraNfe');
     }
 
     /**

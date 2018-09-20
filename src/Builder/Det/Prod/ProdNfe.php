@@ -200,6 +200,20 @@ class ProdNfe extends \PhpNFe\Tools\Builder\Builder
     public $indTot = '';
 
     /**
+     * Número do Pedido de Compra.
+     * @var string
+     * @max 60
+     */
+    public $xPed = null;
+
+    /**
+     * Item do Pedido de Compra.
+     * @var string
+     * @max 60
+     */
+    public $nItemPed = null;
+
+    /**
      * Informações específicas para combustíveis
      * líquidos e lubrificantes.
      * @var PropriedadeNull
