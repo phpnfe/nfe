@@ -67,4 +67,18 @@ class ICMS00Nfe extends \PhpNFe\Tools\Builder\Builder
      * @dec 2
      */
     public $vICMS = 0.00;
+
+    /**
+     * Percentual relativo ao Fundo de Combate a Pobreza (FCP).
+     * @var float
+     * @dec 4
+     */
+    public $pFCP = null;
+
+    /**
+     * Valor do ICMS relativo ao Fundo de Combate a Probreza (FCP).
+     * @var float
+     * @dec 2
+     */
+    public $vFCP = null;
 }
