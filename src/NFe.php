@@ -11,6 +11,8 @@ use PhpNFe\NFe\Tools\InutilizacaoRetorno;
 class NFe
 {
     const version = 'NetForce NFe 1.3';
+    const MOD_55  = '55'; // NFe
+    const MOD_65  = '65'; // NFCe
 
     /**
      * @var array
@@ -32,13 +34,13 @@ class NFe
      * NFe constructor.
      * @param Certificate $certificate
      */
-    public function __construct(array $config, Certificate $certificate)
+    public function __construct(array $config, Certificate $certificate, $mode = self::MOD_55)
     {
         $this->config = $config;
         $this->certificate = $certificate;
 
         $this->tools = new Tools(json_encode($this->config), $this->certificate);
-        $this->tools->model('55');
+        $this->tools->model($mode);
     }
 
     /**
